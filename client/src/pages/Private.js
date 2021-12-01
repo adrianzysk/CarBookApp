@@ -1,0 +1,116 @@
+import React, { useEffect, useState } from 'react';
+import { deleteToken, getToken } from "../tokenService/tokens";
+import { navigate } from '@reach/router';
+import { gql, useQuery } from '@apollo/client'
+import { useMutation } from "@apollo/react-hooks";
+import { Button, AppBar, Typography, Toolbar, Container, TextField } from '@material-ui/core';
+import Car from '../components/Car'
+import './Private.css'
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+      width: '25ch',
+    },
+    textField: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      width: 200,
+    }
+  },
+}));
+
+
+const Private = () => {
+  const classes = useStyles();
+  let token = getToken()
+  const [brand, setBrand] = useState('')
+  const [model, setModel] = useState('')
+  const [productionDate, setProductionDate] = useState('')
+  const [examinationDate, setExaminationDate] = useState('')
+  const [insuranceDate, setInsuranceDate] = useState('')
+
+  const [createVehicle, { datas }] = useMutation(gql`
+  mutation createVehicle($brand: String!, $model: String!, $productionDate: String!, $examinationDate: String!, $insuranceDate: String!) {
+      createVehicle(brand: $brand, model: $model, productionDate: $productionDate, examinationDate: $examinationDate, insuranceDate: $insuranceDate) 
+  }
+`);
+
+async function submitVehicle(e) {
+  e.preventDefault();
+  const { datas } = await createVehicle({ variables: {brand,model,productionDate,examinationDate,insuranceDate} });
+  alert("Car added")
+  return  
+  }
+
+  useEffect(() => {
+    if (token==null) {
+      navigate('/')
+  }
+  })
+  async function submitLogout(e) {
+    e.preventDefault();
+    deleteToken()
+    token = getToken()
+    if (token==null) {
+        navigate('/')
+    }
+  }
+  
+  const GET_CARS = gql`
+      query {
+       vehiclesbyuser{
+        idVehicle
+        idUser
+        brand
+        model
+        productionDate
+        examinationDate
+        insuranceDate
+       }
+     }`
+      const { loading, error, data } = useQuery(GET_CARS,{pollInterval:500});
+      if (loading) return "Loading..."
+      if (error) return `Error! ${error.message}`;
+      return (
+      <div>
+        <form onSubmit={submitLogout}>
+          <AppBar position="static">
+             <Toolbar>
+                <Typography variant="h6">
+                    CARBOOK - HISTORY OF YOUR CAR
+                </Typography>
+                <div className="buttonBox">
+                  <Button variant="contained" size="large" type="submit">Log out</Button>
+                </div>
+              </Toolbar>
+          </AppBar>
+        </form>  
+      {data.vehiclesbyuser.map(car => (
+        <div key={car.idVehicle}>
+          <Car idVehiclE={car.idVehicle} branD={car.brand} modeL={car.model} productionDatE={car.productionDate} examinationDatE={car.examinationDate} insuranceDatE={car.insuranceDate} />
+        </div>
+      ))} 
+        <Container className="container" maxWidth="md" >
+          <div>ADD NEW CAR:</div>
+          <form className={classes.root} autoComplete="off" onSubmit={submitVehicle}>
+            <TextField id="outlined-basic" required label="Brand" variant="outlined" onChange={event => setBrand(event.target.value)}/>
+            <TextField id="outlined-basic" required label="Model" variant="outlined" onChange={event => setModel(event.target.value)}/>
+            <TextField id="date" label="Producion Date" type="date" className={classes.textField} InputLabelProps={{shrink: true,}} onChange={event => setProductionDate(event.target.value)}/>
+            <TextField id="date" label="Examination Date" type="date" className={classes.textField} InputLabelProps={{shrink: true,}} onChange={event => setExaminationDate(event.target.value)}/>
+            <TextField id="date" label="Insurance Date" type="date" className={classes.textField} InputLabelProps={{shrink: true,}} onChange={event => setInsuranceDate(event.target.value)}/>
+            <div className="paddings" id="auto"> 
+               <div>
+                 <Button variant="outlined" size="large" type="submit">ADD CAR</Button>
+               </div>
+            </div>
+          </form>
+        </Container>
+        </div> 
+  )
+}
+
+export default Private
+

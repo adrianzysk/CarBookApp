@@ -1,0 +1,36 @@
+.buttonBox{
+    position: relative;
+    margin-left: auto;
+}
+
+.container{
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border-radius: 10px 10px 10px 10px;
+    background: #fff;
+    padding: 30px;
+    width: 90%;
+    max-width: 1850px;
+    min-height: 5vh;
+    position: relative;
+    padding: 0px;
+    -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+    box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.paddings{
+    padding: 10px 0 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.marginsLeft{
+    margin-left: 10px;
+}
+
+#auto{
+    width: auto;
+}
