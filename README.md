@@ -10,11 +10,13 @@ It use JWT for loging.
 
 # Installation
 
-App needs node and postgresSQL. Configure server/config/database.js:
+App needs node and postgresSQL. Create database and configure server/config/database.js:
 1. Database name
 2. User Name
 3. Password
 
 ![image](https://user-images.githubusercontent.com/25934445/150805945-013f7f24-f439-4972-aab2-f3e790a16eca.png)
 
-To start server inastall packages
+To start server install packages by running command in main folder "npm install" and then "npm run server".
+
+To start React scripts inastall packages by running command in /client folder "npm install" and then "npm run start".
