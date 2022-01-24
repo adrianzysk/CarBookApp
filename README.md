@@ -10,5 +10,11 @@ It use JWT for loging.
 
 # Installation
 
+App needs node and postgresSQL. Configure server/config/database.js:
+1. Database name
+2. User Name
+3. Password
 
+![image](https://user-images.githubusercontent.com/25934445/150805945-013f7f24-f439-4972-aab2-f3e790a16eca.png)
 
+To start server inastall packages
