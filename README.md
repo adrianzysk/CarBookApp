@@ -1,6 +1,6 @@
 # CarBookApp
 
-Application created to store informations about cars. Ensures secure login and registration. Allows to add vehicles and repair information to the database. Frontend is written by using React. Server is created on node with Express, Apollo and PostgreSQL database. App use GraphQl as API.
+Web created to store informations about cars. Ensures secure login and registration. Allows to add vehicles and repair information to the database. Frontend is written by using React. Server is created on node with Express, Apollo and PostgreSQL database. App use GraphQl as API.
 
 ### Loging
 
